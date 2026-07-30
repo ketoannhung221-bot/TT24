@@ -1,0 +1,52 @@
+{
+  "template_id": "TPL_HCSN_TT24_V1",
+  "unit_type": "HanhChinhSuNghiep",
+  "parser_engine": "excel_reader_v2",
+  "mappings": {
+    "account_code": {
+      "source_column": "Mã tài khoản",
+      "transform": "trim_string",
+      "required": true
+    },
+    "account_name": {
+      "source_column": "Tên tài khoản",
+      "transform": "none",
+      "required": true
+    },
+    "opening_debit": {
+      "source_column": "Số dư đầu kỳ - Nợ",
+      "transform": "parse_decimal",
+      "required": false
+    },
+    "opening_credit": {
+      "source_column": "Số dư đầu kỳ - Có",
+      "transform": "parse_decimal",
+      "required": false
+    },
+    "period_debit": {
+      "source_column": "Phát sinh trong kỳ - Nợ",
+      "transform": "parse_decimal",
+      "required": false
+    },
+    "period_credit": {
+      "source_column": "Phát sinh trong kỳ - Có",
+      "transform": "parse_decimal",
+      "required": false
+    },
+    "closing_debit": {
+      "source_column": "Số dư cuối kỳ - Nợ",
+      "transform": "parse_decimal",
+      "required": true
+    },
+    "closing_credit": {
+      "source_column": "Số dư cuối kỳ - Có",
+      "transform": "parse_decimal",
+      "required": true
+    }
+  },
+  "post_processing": {
+    "normalize_account_code": true,
+    "currency": "VND",
+    "decimal_places": 2
+  }
+}

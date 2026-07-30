@@ -1,0 +1,115 @@
+{
+  "rules": [
+    {
+      "id": "R001_unbalanced_totals",
+      "version": "1.0.0",
+      "priority": "P1",
+      "category": "accounting_integrity",
+      "expression": "sum(trial_balance_records.opening_debit) == sum(trial_balance_records.opening_credit) && sum(trial_balance_records.period_debit) == sum(trial_balance_records.period_credit) && sum(trial_balance_records.closing_debit) == sum(trial_balance_records.closing_credit)",
+      "tolerance_vnd": 0.0,
+      "action_on_fail": "ERROR_UNBALANCED",
+      "severity": "BLOCKER",
+      "message": "Tổng số dư hoặc phát sinh Nợ và Có không cân đối.",
+      "suggested_fix": "Kiểm tra lại số liệu nhập phát sinh hoặc số dư đầu kỳ."
+    },
+    {
+      "id": "R002_required_fields",
+      "version": "1.0.0",
+      "priority": "P1",
+      "category": "data_completeness",
+      "expression": "unit_info.unit_code != null && unit_info.accounting_period.from_date != null && every(trial_balance_records, r -> r.account_code != null && r.account_name != null)",
+      "action_on_fail": "ERROR_MISSING_REQUIRED",
+      "severity": "BLOCKER",
+      "message": "Thiếu trường dữ liệu bắt buộc.",
+      "suggested_fix": "Điền các trường bắt buộc hoặc chọn template ánh xạ phù hợp."
+    },
+    {
+      "id": "R003_duplicate_documents",
+      "version": "1.0.0",
+      "priority": "P1",
+      "category": "duplicate_check",
+      "expression": "exists_duplicate(attachments, ['file_hash','meta.document_number','meta.date','meta.amount'])",
+      "action_on_fail": "ERROR_DUPLICATE",
+      "severity": "BLOCKER",
+      "message": "Phát hiện chứng từ trùng lặp.",
+      "suggested_fix": "Xác minh chứng từ gốc, loại bỏ bản sao nếu không hợp lệ."
+    },
+    {
+      "id": "R004_reconcile_111_112",
+      "version": "1.0.0",
+      "priority": "P1",
+      "category": "bank_reconciliation",
+      "expression": "match_reconciliation('111','112', attachments)",
+      "action_on_fail": "ERROR_RECONCILE",
+      "severity": "BLOCKER",
+      "message": "Số dư TK 111/112 không khớp với biên bản đối chiếu.",
+      "suggested_fix": "Cung cấp biên bản đối chiếu hoặc giải trình chênh lệch."
+    },
+    {
+      "id": "R005_tk468_continuity",
+      "version": "1.0.0",
+      "priority": "P1",
+      "category": "transfer_source",
+      "expression": "check_continuity_account('468', historical_data)",
+      "action_on_fail": "ERROR_TRANSFER",
+      "severity": "BLOCKER",
+      "message": "Giá trị chuyển nguồn (TK 468) không liên tục với năm trước.",
+      "suggested_fix": "Kiểm tra dữ liệu năm trước hoặc cung cấp giải trình."
+    },
+    {
+      "id": "R006_balance_sheet",
+      "version": "1.0.0",
+      "priority": "P1",
+      "category": "balance_sheet_integrity",
+      "expression": "sum(filter(trial_balance_records, is_asset).closing_debit + closing_credit) == sum(filter(trial_balance_records, is_liability_or_equity).closing_debit + closing_credit)",
+      "action_on_fail": "ERROR_BALANCE_SHEET",
+      "severity": "BLOCKER",
+      "message": "Tổng tài sản không bằng tổng nguồn.",
+      "suggested_fix": "Kiểm tra phân loại TK và các bút toán hạch toán."
+    },
+    {
+      "id": "R007_line_items_sum",
+      "version": "1.0.0",
+      "priority": "P2",
+      "category": "detail_matching",
+      "expression": "for_each(detail_reports, d -> sum(d.line_items.amount) == d.report_total)",
+      "action_on_fail": "WARNING_DETAIL_MISMATCH",
+      "severity": "WARNING",
+      "message": "Tổng các dòng chi tiết không bằng tổng báo cáo.",
+      "suggested_fix": "Kiểm tra trích xuất dòng hoặc chỉnh sửa thủ công."
+    },
+    {
+      "id": "R008_vat_check",
+      "version": "1.0.0",
+      "priority": "P2",
+      "category": "tax_validation",
+      "expression": "validate_vat_rates(line_items, tax_code_map)",
+      "action_on_fail": "WARNING_TAX_MISMATCH",
+      "severity": "WARNING",
+      "message": "Thuế suất/VAT không hợp lệ theo danh mục.",
+      "suggested_fix": "Xác minh loại hàng/dịch vụ và điều chỉnh thuế suất."
+    },
+    {
+      "id": "R009_approval_threshold",
+      "version": "1.0.0",
+      "priority": "P2",
+      "category": "authorization",
+      "expression": "report_total > config.approval_threshold",
+      "action_on_fail": "PENDING_APPROVAL",
+      "severity": "INFO",
+      "message": "Báo cáo vượt ngưỡng phê duyệt, cần phê duyệt thủ công.",
+      "suggested_fix": "Chuyển tới workflow phê duyệt theo cấu hình."
+    },
+    {
+      "id": "R010_unknown_account",
+      "version": "1.0.0",
+      "priority": "P3",
+      "category": "mapping_check",
+      "expression": "every(trial_balance_records, r -> exists_in_chart_of_accounts(r.account_code))",
+      "action_on_fail": "WARNING_UNKNOWN_ACCOUNT",
+      "severity": "WARNING",
+      "message": "Phát hiện mã tài khoản không nằm trong Chart of Accounts.",
+      "suggested_fix": "Gợi ý mapping hoặc thêm mã TK vào danh mục."
+    }
+  ]
+}
