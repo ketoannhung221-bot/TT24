@@ -1,0 +1,10 @@
+account_code,account_name,account_type,level,valid_from,valid_to,notes
+1111,Tiền mặt Việt Nam,asset,4,2024-01-01,,Cash on hand
+1121,Tiền gửi ngân hàng,VND,asset,4,2024-01-01,,Bank deposit VND
+1122,Tiền gửi ngân hàng,foreign_asset,4,2024-01-01,,Bank deposit foreign currency
+211,Phải trả ngắn hạn,liability,3,2024-01-01,,Short-term payables
+221,Phải thu ngắn hạn,asset,3,2024-01-01,,Short-term receivables
+311,Vốn đầu tư,equity,2,2024-01-01,,Investment capital
+468,Quỹ chuyển nguồn,liability,3,2024-01-01,,Transfer to next year
+501,Doanh thu bán hàng,revenue,3,2024-01-01,,Sales revenue
+821,Chi phí quản lý,expense,3,2024-01-01,,Administrative expense

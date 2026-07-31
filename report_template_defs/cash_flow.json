@@ -1,0 +1,10 @@
+{
+  "report_template_id": "cash_flow_tt24_v1",
+  "name": "Báo cáo Lưu chuyển tiền",
+  "fields": [
+    {"field_id":"net_cash_from_operating_activities","label":"Lưu chuyển ròng từ hoạt động kinh doanh","datatype":"decimal","required":true},
+    {"field_id":"net_cash_from_investing_activities","label":"Lưu chuyển ròng từ hoạt động đầu tư","datatype":"decimal","required":true},
+    {"field_id":"net_cash_from_financing_activities","label":"Lưu chuyển ròng từ hoạt động tài ch��nh","datatype":"decimal","required":true}
+  ],
+  "notes": "Canonical mapping for cash flow statement." 
+}
