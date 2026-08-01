@@ -1,0 +1,17 @@
+{
+  "sample_id": "SAMPLE_CANONICAL_001",
+  "unit_info": {
+    "unit_code": "ST01234",
+    "unit_name": "Trường Cao đẳng Công nghệ Quốc gia",
+    "budget_chapter": "154",
+    "accounting_period": {"year":2026,"from_date":"2026-01-01","to_date":"2026-12-31"}
+  },
+  "trial_balance_records": [
+    {"account_code":"1111","account_name":"Tiền mặt Việt Nam","opening_debit":15000000.00,"opening_credit":0.00,"period_debit":120000000.00,"period_credit":115000000.00,"closing_debit":20000000.00,"closing_credit":0.00,"fund_source":"12","budget_chapter":"154","budget_category":"46","budget_sub_category":"461","budget_item":"01","budget_sub_item":"01","provenance":{"source_reference":{"file_id":"file-001","sheet":"Sheet1","row":12,"col":"A"},"confidence":0.95}}
+  ],
+  "off_balance_records": [
+    {"account_code":"012","account_name":"Phí được khấu trừ, để lại","opening_balance":50000000.00,"increase_amount":200000000.00,"decrease_amount":180000000.00,"closing_balance":70000000.00}
+  ],
+  "attachments": [{"file_id":"file-001","file_type":"excel","original_filename":"trial_balance_jan.xlsx","s3_path":"minio://minio.local/tt24/uploads/trial_balance_jan.xlsx","ocr_confidence":1.0}],
+  "meta": {"source_file":"trial_balance_jan.xlsx","ingested_at":"2026-07-31T12:00:00Z","processor_version":"v1.0.0","mapping_template_id":"TPL_MISA_STANDARD_V1"}
+}

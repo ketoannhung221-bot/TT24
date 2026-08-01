@@ -1,0 +1,17 @@
+{
+  "report_template_id": "phuluc_III_balance_details_v1",
+  "name": "Phụ lục III - Bảng cân đối chi tiết",
+  "fields": [
+    {"field_id":"account_group","label":"Nhóm tài khoản","datatype":"string","required":true},
+    {"field_id":"account_code","label":"Mã tài khoản","datatype":"string","required":true},
+    {"field_id":"account_name","label":"Tên tài khoản","datatype":"string","required":true},
+    {"field_id":"opening_balance_debit","label":"Dư đầu kỳ - Nợ","datatype":"decimal","required":false},
+    {"field_id":"opening_balance_credit","label":"Dư đầu kỳ - Có","datatype":"decimal","required":false},
+    {"field_id":"period_debit","label":"Phát sinh trong kỳ - Nợ","datatype":"decimal","required":false},
+    {"field_id":"period_credit","label":"Phát sinh trong kỳ - Có","datatype":"decimal","required":false},
+    {"field_id":"closing_balance_debit","label":"Dư cuối kỳ - Nợ","datatype":"decimal","required":true},
+    {"field_id":"closing_balance_credit","label":"Dư cuối kỳ - Có","datatype":"decimal","required":true},
+    {"field_id":"fund_source","label":"Nguồn kinh phí","datatype":"string","required":false}
+  ],
+  "notes": "Chi tiết các tài khoản theo Phụ lục III, dùng cho ánh xạ bảng cân đối chi tiết."
+}
