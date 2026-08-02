@@ -1,0 +1,15 @@
+{
+  "id": "R015_rounding_tolerance",
+  "version": "1.0.0",
+  "title": "Rounding Tolerance Check",
+  "description": "Check differences are within configured tolerance.",
+  "priority": "P3",
+  "severity": "INFO",
+  "effective_date": "2024-01-01",
+  "state": "draft",
+  "dependencies": [],
+  "legal_basis": "KB::rounding::placeholder",
+  "expression": {"within_tolerance": [{"var":"difference"},{"var":"config.tolerance_vnd"}]},
+  "helpers_required": ["within_tolerance"],
+  "test_cases": ["TC_R015_PASS_1","TC_R015_PASS_2","TC_R015_FAIL_1","TC_R015_FAIL_2","TC_R015_BOUNDARY","TC_R015_INVALID"]
+}

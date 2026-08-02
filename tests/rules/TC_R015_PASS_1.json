@@ -1,0 +1,6 @@
+{
+  "test_case_id": "TC_R015_PASS_1",
+  "rule_id": "R015_rounding_tolerance",
+  "input": {"difference": 0, "config": {"tolerance_vnd": 0}},
+  "expected": {"passed": true}
+}

@@ -1,0 +1,15 @@
+{
+  "id": "R014_currency_consistency",
+  "version": "1.0.0",
+  "title": "Currency Consistency Check",
+  "description": "Ensure currency is consistent across attachments and records.",
+  "priority": "P2",
+  "severity": "WARNING",
+  "effective_date": "2024-01-01",
+  "state": "draft",
+  "dependencies": [],
+  "legal_basis": "KB::currency::placeholder",
+  "expression": {"validate_currency_consistency": [{"var":"trial_balance_records"},{"var":"attachments"}]},
+  "helpers_required": ["validate_currency_consistency"],
+  "test_cases": ["TC_R014_PASS_1","TC_R014_PASS_2","TC_R014_FAIL_1","TC_R014_FAIL_2","TC_R014_BOUNDARY","TC_R014_INVALID"]
+}

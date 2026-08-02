@@ -1,0 +1,6 @@
+{
+  "test_case_id": "TC_R013_INVALID",
+  "rule_id": "R013_fund_source_validation",
+  "input": {"trial_balance_records": "invalid" , "config": {"fund_source_vocab": ["11"]}},
+  "expected": {"passed": false}
+}

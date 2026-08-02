@@ -1,0 +1,6 @@
+{
+  "test_case_id": "TC_R014_INVALID",
+  "rule_id": "R014_currency_consistency",
+  "input": {"trial_balance_records": "not-an-array", "attachments": "not-an-array"},
+  "expected": {"passed": false}
+}

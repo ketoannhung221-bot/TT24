@@ -1,0 +1,6 @@
+{
+  "test_case_id": "TC_R013_PASS_1",
+  "rule_id": "R013_fund_source_validation",
+  "input": {"trial_balance_records": [{"account_code":"1111","fund_source":"12"}], "config": {"fund_source_vocab": ["11","12","21"]}},
+  "expected": {"passed": true}
+}

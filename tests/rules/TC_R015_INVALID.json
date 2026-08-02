@@ -1,0 +1,6 @@
+{
+  "test_case_id": "TC_R015_INVALID",
+  "rule_id": "R015_rounding_tolerance",
+  "input": {"difference": "NaN", "config": {"tolerance_vnd": "abc"}},
+  "expected": {"passed": false}
+}

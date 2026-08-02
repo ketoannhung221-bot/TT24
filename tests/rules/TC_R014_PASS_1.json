@@ -1,0 +1,6 @@
+{
+  "test_case_id": "TC_R014_PASS_1",
+  "rule_id": "R014_currency_consistency",
+  "input": {"trial_balance_records": [{"account_code":"1111","currency":"VND"}], "attachments": [{"currency":"VND"}]},
+  "expected": {"passed": true}
+}

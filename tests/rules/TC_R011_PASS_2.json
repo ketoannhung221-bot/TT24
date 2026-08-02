@@ -1,0 +1,6 @@
+{
+  "test_case_id": "TC_R011_PASS_2",
+  "rule_id": "R011_negative_balance_check",
+  "input": {"trial_balance_records": [{"account_code":"1111","closing_debit":0.0,"closing_credit":100.0}]},
+  "expected": {"passed": true}
+}

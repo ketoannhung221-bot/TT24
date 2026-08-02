@@ -1,0 +1,6 @@
+{
+  "test_case_id": "TC_R011_INVALID",
+  "rule_id": "R011_negative_balance_check",
+  "input": {"trial_balance_records": "not-an-array"},
+  "expected": {"passed": true}
+}

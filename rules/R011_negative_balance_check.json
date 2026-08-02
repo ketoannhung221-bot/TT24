@@ -1,0 +1,15 @@
+{
+  "id": "R011_negative_balance_check",
+  "version": "1.0.0",
+  "title": "Negative Balance Check",
+  "description": "Detect negative closing balances in trial balance records.",
+  "priority": "P2",
+  "severity": "WARNING",
+  "effective_date": "2024-01-01",
+  "state": "draft",
+  "dependencies": [],
+  "legal_basis": "KB::accounting_rules::negative_balance",
+  "expression": {"any_negative": [{"var":"trial_balance_records"}]},
+  "helpers_required": ["any_negative"],
+  "test_cases": ["TC_R011_PASS_1","TC_R011_PASS_2","TC_R011_FAIL_1","TC_R011_FAIL_2","TC_R011_BOUNDARY","TC_R011_INVALID"]
+}

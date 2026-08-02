@@ -1,0 +1,6 @@
+{
+  "test_case_id": "TC_R012_FAIL_2",
+  "rule_id": "R012_account_level_consistency",
+  "input": {"trial_balance_records": [{"account_code":"9999","level":"3"}]},
+  "expected": {"passed": false}
+}

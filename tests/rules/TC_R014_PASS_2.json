@@ -1,0 +1,6 @@
+{
+  "test_case_id": "TC_R014_PASS_2",
+  "rule_id": "R014_currency_consistency",
+  "input": {"trial_balance_records": [], "attachments": []},
+  "expected": {"passed": true}
+}

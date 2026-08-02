@@ -1,0 +1,15 @@
+{
+  "id": "R012_account_level_consistency",
+  "version": "1.0.0",
+  "title": "Account Level Consistency",
+  "description": "Validate account level classification matches COA 'level' where available.",
+  "priority": "P2",
+  "severity": "WARNING",
+  "effective_date": "2024-01-01",
+  "state": "draft",
+  "dependencies": [],
+  "legal_basis": "KB::coa::levels",
+  "expression": {"validate_account_levels": [{"var":"trial_balance_records"}]},
+  "helpers_required": ["validate_account_levels"],
+  "test_cases": ["TC_R012_PASS_1","TC_R012_PASS_2","TC_R012_FAIL_1","TC_R012_FAIL_2","TC_R012_BOUNDARY","TC_R012_INVALID"]
+}

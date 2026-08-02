@@ -1,0 +1,15 @@
+{
+  "id": "R013_fund_source_validation",
+  "version": "1.0.0",
+  "title": "Fund Source Validation",
+  "description": "Validate that fund_source codes in trial balance exist in configured vocab.",
+  "priority": "P2",
+  "severity": "WARNING",
+  "effective_date": "2024-01-01",
+  "state": "draft",
+  "dependencies": [],
+  "legal_basis": "KB::fund_source::placeholder",
+  "expression": {"validate_fund_source": [{"var":"trial_balance_records"},{"var":"config.fund_source_vocab"}]},
+  "helpers_required": ["validate_fund_source"],
+  "test_cases": ["TC_R013_PASS_1","TC_R013_PASS_2","TC_R013_FAIL_1","TC_R013_FAIL_2","TC_R013_BOUNDARY","TC_R013_INVALID"]
+}
