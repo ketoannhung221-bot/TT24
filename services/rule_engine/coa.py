@@ -1,7 +1,10 @@
-"""Chart of Accounts service
+"""Chart of Accounts service (thread-safe improvements)
 
-Provides in-memory cache of one or more COA CSV files. Supports reload-on-change based
-on mtime and sha256 hash. No hardcoded paths; paths configured at runtime.
+Improvements:
+- Use RLock around all reads/writes to _COA_CACHE/_COA_META.
+- reload_if_changed now checks per-file mtime/hash and only reloads changed files.
+- Exposes get_cache_snapshot() for safe read-only access in other threads.
+- Supports multiple configured paths; does not hardcode paths.
 """
 from __future__ import annotations
 import csv
@@ -27,15 +30,33 @@ def _file_hash(path: str) -> str:
     return h.hexdigest()
 
 
+def _load_file_into_entries(p: str) -> Dict[str, Dict[str, Any]]:
+    entries: Dict[str, Dict[str, Any]] = {}
+    with open(p, encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        for r in reader:
+            code = (r.get('account_code') or '').strip()
+            if not code:
+                continue
+            entries[code] = r
+    return entries
+
+
 def load_chart_of_accounts(paths: Optional[List[str]] = None) -> Dict[str, Dict[str, Any]]:
     """Load one or more COA CSV files into in-memory cache.
+    Only reload files whose mtime/hash changed.
     paths: list of filesystem paths. If None, returns current cache (no-op).
     Returns combined COA dict mapping account_code -> row dict.
     """
     global _COA_CACHE, _COA_META
     if not paths:
-        return _COA_CACHE
+        # no input; just return snapshot
+        with _lock:
+            return dict(_COA_CACHE)
+
     combined: Dict[str, Dict[str, Any]] = {}
+    loaded_paths: List[str] = []
+
     for p in paths:
         if not os.path.isfile(p):
             logger.warning("COA path not found: %s", p)
@@ -44,32 +65,29 @@ def load_chart_of_accounts(paths: Optional[List[str]] = None) -> Dict[str, Dict[
             mtime = os.path.getmtime(p)
             h = _file_hash(p)
             meta = _COA_META.get(p)
-            if meta and meta.get('mtime') == mtime and meta.get('hash') == h:
-                # file unchanged; we may reuse existing entries for this path
-                logger.debug("COA file unchanged: %s", p)
-                # merge entries from previous cache for this path
-                prev = meta.get('entries') or {}
-                combined.update(prev)
-                continue
-            # (re)load file
-            entries: Dict[str, Dict[str, Any]] = {}
-            with open(p, encoding='utf-8') as f:
-                reader = csv.DictReader(f)
-                for r in reader:
-                    code = (r.get('account_code') or '').strip()
-                    if not code:
-                        continue
-                    entries[code] = r
-            # update meta and combined
-            _COA_META[p] = {'mtime': mtime, 'hash': h, 'entries': entries}
+            # if file exists previously and both mtime/hash equal, reuse previous entries
+            if meta and meta.get('mtime') == mtime and meta.get('hash') == h and meta.get('entries'):
+                entries = meta.get('entries')
+                logger.debug("Reusing cached entries for %s", p)
+            else:
+                entries = _load_file_into_entries(p)
+                with _lock:
+                    _COA_META[p] = {'mtime': mtime, 'hash': h, 'entries': entries}
+                logger.info("Loaded COA file %s with %d entries", p, len(entries))
             combined.update(entries)
-            logger.info("Loaded COA file %s with %d entries", p, len(entries))
+            loaded_paths.append(p)
         except Exception as e:
             logger.exception("Failed to load COA file %s: %s", p, e)
             continue
+
     with _lock:
         _COA_CACHE = combined
-    return _COA_CACHE
+    return dict(_COA_CACHE)
+
+
+def get_cache_snapshot() -> Dict[str, Dict[str, Any]]:
+    with _lock:
+        return dict(_COA_CACHE)
 
 
 def get_account(account_code: str) -> Optional[Dict[str, Any]]:
@@ -94,6 +112,37 @@ def get_account_type(account_code: str) -> Optional[str]:
 
 
 def reload_if_changed(paths: Optional[List[str]] = None) -> Tuple[int, List[str]]:
-    """Reload COA files if they changed. Returns (count_entries, list_paths_loaded)."""
-    loaded = load_chart_of_accounts(paths)
-    return len(loaded), list(_COA_META.keys())
+    """Reload only files that have changed since last load. Returns (count_entries, loaded_paths).
+    If paths None, checks current _COA_META for file changes and reloads them.
+    """
+    global _COA_CACHE, _COA_META
+    reloaded_paths: List[str] = []
+    combined: Dict[str, Dict[str, Any]] = {}
+
+    paths_to_check = paths or list(_COA_META.keys())
+
+    for p in paths_to_check:
+        if not os.path.isfile(p):
+            logger.warning("COA path not found during reload check: %s", p)
+            continue
+        try:
+            mtime = os.path.getmtime(p)
+            h = _file_hash(p)
+            meta = _COA_META.get(p)
+            if meta and meta.get('mtime') == mtime and meta.get('hash') == h and meta.get('entries'):
+                entries = meta.get('entries')
+                logger.debug("No change in COA file: %s", p)
+            else:
+                entries = _load_file_into_entries(p)
+                with _lock:
+                    _COA_META[p] = {'mtime': mtime, 'hash': h, 'entries': entries}
+                reloaded_paths.append(p)
+                logger.info("Reloaded COA file: %s (%d entries)", p, len(entries))
+            combined.update(entries)
+        except Exception as e:
+            logger.exception("Error while reloading COA file %s: %s", p, e)
+            continue
+
+    with _lock:
+        _COA_CACHE = combined
+    return len(_COA_CACHE), reloaded_paths

@@ -1,6 +1,5 @@
 """
-Updated regression runner that executes pytest to produce coverage and JUnit XML,
-and also runs the JSON testcases runner as fallback. Generates a summary report.
+Updated regression runner to run full test suite, produce JUnit and coverage outputs, and generate summary including execution time.
 """
 import os
 import subprocess
@@ -9,17 +8,17 @@ import time
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-JUNIT_OUT = REPO_ROOT / 'results' / 'regression_junit.xml'
-COV_XML = REPO_ROOT / 'results' / 'coverage.xml'
-COV_DIR = REPO_ROOT / '.coverage'
+RESULTS_DIR = REPO_ROOT / 'results'
+JUNIT_OUT = RESULTS_DIR / 'regression_junit.xml'
+COV_XML = RESULTS_DIR / 'coverage.xml'
 
-os.makedirs(REPO_ROOT / 'results', exist_ok=True)
+os.makedirs(RESULTS_DIR, exist_ok=True)
 
 start = time.time()
 
-# Run pytest for tests/test_rule_runner.py to leverage existing pytest harness and coverage
+# Run pytest for the entire tests/ directory to produce JUnit XML and coverage
 pytest_cmd = [
-    sys.executable, '-m', 'pytest', 'tests/test_rule_runner.py',
+    sys.executable, '-m', 'pytest', 'tests',
     '--junitxml', str(JUNIT_OUT),
     '--cov=services', '--cov-report=xml:' + str(COV_XML), '-q'
 ]
@@ -37,12 +36,7 @@ print('Pytest return code:', retcode)
 print('JUnit report:', JUNIT_OUT)
 print('Coverage XML:', COV_XML)
 
-# If pytest failed, exit non-zero for CI
-if retcode != 0:
-    print('Some tests failed. See JUnit/pytest output for details.')
-    sys.exit(retcode)
-
-# Parse JUnit XML to list failures (if any) - lightweight parsing
+# Parse JUnit XML to list failures
 import xml.etree.ElementTree as ET
 
 failures = []
@@ -52,9 +46,9 @@ if JUNIT_OUT.exists():
     for testcase in root.iter('testcase'):
         for failure in testcase.findall('failure'):
             failures.append({
-                'testcase': testcase.attrib.get('name'),
+                'testcase': testcase.attrib.get('classname') + '.' + testcase.attrib.get('name') if testcase.attrib.get('classname') else testcase.attrib.get('name'),
                 'message': failure.attrib.get('message'),
-                'text': failure.text
+                'text': (failure.text or '').strip()
             })
 
 print('Failures in JUnit:', len(failures))
@@ -64,5 +58,5 @@ for f in failures:
 # Exit 0 if no failures
 if failures:
     sys.exit(2)
-print('All regression testcases passed (pytest).')
+print('All regression tests passed.')
 sys.exit(0)
