@@ -1,0 +1,12 @@
+{
+  "test_case_id": "TC_R001_001",
+  "rule_id": "R001_unbalanced_totals",
+  "input": {
+    "unit_info": {"unit_code":"ST0001","accounting_period":{"year":2026,"from_date":"2026-01-01","to_date":"2026-12-31"}},
+    "trial_balance_records": [
+      {"account_code":"1111","account_name":"Cash","opening_debit":1000.0,"opening_credit":0.0,"period_debit":500.0,"period_credit":0.0,"closing_debit":1500.0,"closing_credit":0.0},
+      {"account_code":"211","account_name":"Payable","opening_debit":0.0,"opening_credit":1000.0,"period_debit":0.0,"period_credit":500.0,"closing_debit":0.0,"closing_credit":1500.0}
+    ]
+  },
+  "expected": {"passed": true}
+}

@@ -1,0 +1,9 @@
+{
+  "test_case_id": "TC_R002_002",
+  "rule_id": "R002_required_fields",
+  "input": {
+    "unit_info": {"unit_code":null,"unit_name":"Unit A","accounting_period":{"year":2026}},
+    "trial_balance_records": []
+  },
+  "expected": {"passed": false}
+}

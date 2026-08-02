@@ -1,0 +1,37 @@
+{
+  "id": "R001_unbalanced_totals",
+  "version": "1.0.0",
+  "title": "Unbalanced Totals - Aggregate Debit/Credit Check",
+  "description": "Ensure opening, period and closing totals for debit and credit are balanced across trial balance records.",
+  "priority": "P1",
+  "severity": "BLOCKER",
+  "effective_date": "2024-01-01",
+  "expiry_date": null,
+  "state": "draft",
+  "dependencies": [],
+  "legal_basis": "KB::TT24::placeholder::balance_checks",
+  "expression": {
+    "and": [
+      {
+        "==": [
+          {"sum": [ {"var": "trial_balance_records"}, "opening_debit"]},
+          {"sum": [ {"var": "trial_balance_records"}, "opening_credit"]}
+        ]
+      },
+      {
+        "==": [
+          {"sum": [ {"var": "trial_balance_records"}, "period_debit"]},
+          {"sum": [ {"var": "trial_balance_records"}, "period_credit"]}
+        ]
+      },
+      {
+        "==": [
+          {"sum": [ {"var": "trial_balance_records"}, "closing_debit"]},
+          {"sum": [ {"var": "trial_balance_records"}, "closing_credit"]}
+        ]
+      }
+    ]
+  },
+  "helpers_required": ["sum"],
+  "test_cases": ["TC_R001_001", "TC_R001_002"]
+}

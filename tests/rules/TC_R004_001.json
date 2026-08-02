@@ -1,0 +1,8 @@
+{
+  "test_case_id": "TC_R004_001",
+  "rule_id": "R004_reconcile_111_112",
+  "input": {
+    "attachments": [ {"original_filename":"bank_reconciliation_jan.pdf"} ]
+  },
+  "expected": {"passed": true}
+}

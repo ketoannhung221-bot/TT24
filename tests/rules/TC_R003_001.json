@@ -1,0 +1,11 @@
+{
+  "test_case_id": "TC_R003_001",
+  "rule_id": "R003_duplicate_documents",
+  "input": {
+    "attachments": [
+      {"file_hash":"abc123","meta":{"document_number":"INV001","date":"2026-01-10","amount":1000}},
+      {"file_hash":"def456","meta":{"document_number":"INV002","date":"2026-01-11","amount":2000}}
+    ]
+  },
+  "expected": {"passed": true}
+}

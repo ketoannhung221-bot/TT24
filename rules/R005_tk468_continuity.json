@@ -1,0 +1,16 @@
+{
+  "id": "R005_tk468_continuity",
+  "version": "1.0.0",
+  "title": "Transfer Account 468 Continuity",
+  "description": "Check continuity of transfer account (468) between previous year and reporting year.",
+  "priority": "P1",
+  "severity": "BLOCKER",
+  "effective_date": "2024-01-01",
+  "expiry_date": null,
+  "state": "draft",
+  "dependencies": [],
+  "legal_basis": "KB::TT24::placeholder::transfer",
+  "expression": {"check_continuity_account": ["468", {"var": "historical_data"}]},
+  "helpers_required": ["check_continuity_account"],
+  "test_cases": ["TC_R005_001","TC_R005_002"]
+}

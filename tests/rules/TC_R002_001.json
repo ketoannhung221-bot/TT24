@@ -1,0 +1,9 @@
+{
+  "test_case_id": "TC_R002_001",
+  "rule_id": "R002_required_fields",
+  "input": {
+    "unit_info": {"unit_code":"ST0001","unit_name":"Unit A","accounting_period":{"year":2026,"from_date":"2026-01-01","to_date":"2026-12-31"}},
+    "trial_balance_records": [ {"account_code":"1111","account_name":"Cash","closing_debit":0.0,"closing_credit":0.0} ]
+  },
+  "expected": {"passed": true}
+}

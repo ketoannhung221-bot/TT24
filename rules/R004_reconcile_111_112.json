@@ -1,0 +1,16 @@
+{
+  "id": "R004_reconcile_111_112",
+  "version": "1.0.0",
+  "title": "Reconcile Cash and Bank Accounts 111/112",
+  "description": "Verify closing balances for cash/bank accounts are supported by reconciliation attachments.",
+  "priority": "P1",
+  "severity": "BLOCKER",
+  "effective_date": "2024-01-01",
+  "expiry_date": null,
+  "state": "draft",
+  "dependencies": [],
+  "legal_basis": "KB::TT24::placeholder::reconcile",
+  "expression": {"match_reconciliation": ["111","112", {"var": "attachments"}]},
+  "helpers_required": ["match_reconciliation"],
+  "test_cases": ["TC_R004_001","TC_R004_002"]
+}

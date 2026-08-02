@@ -1,0 +1,22 @@
+{
+  "id": "R002_required_fields",
+  "version": "1.0.0",
+  "title": "Required Fields Present",
+  "description": "Check that required top-level fields and basic trial balance fields exist.",
+  "priority": "P1",
+  "severity": "BLOCKER",
+  "effective_date": "2024-01-01",
+  "expiry_date": null,
+  "state": "draft",
+  "dependencies": [],
+  "legal_basis": "KB::LAW_ACCT_2015::placeholder::required_fields",
+  "expression": {
+    "and": [
+      {"!==": [{"var": "unit_info.unit_code"}, null]},
+      {"!==": [{"var": "unit_info.accounting_period.from_date"}, null]},
+      {"some": [{"var": "trial_balance_records"}, {"!==": [{"var": "account_code"}, null]}]}
+    ]
+  },
+  "helpers_required": [],
+  "test_cases": ["TC_R002_001", "TC_R002_002"]
+}

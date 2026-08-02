@@ -1,0 +1,16 @@
+{
+  "id": "R003_duplicate_documents",
+  "version": "1.0.0",
+  "title": "Duplicate Documents Detection",
+  "description": "Detect duplicate attachments by key fields.",
+  "priority": "P1",
+  "severity": "BLOCKER",
+  "effective_date": "2024-01-01",
+  "expiry_date": null,
+  "state": "draft",
+  "dependencies": [],
+  "legal_basis": "KB::TT24::placeholder::dup_check",
+  "expression": {"!": [ {"exists_duplicate": [ {"var": "attachments"}, ["file_hash","meta.document_number","meta.date","meta.amount"] ] } ] },
+  "helpers_required": ["exists_duplicate"],
+  "test_cases": ["TC_R003_001","TC_R003_002"]
+}
